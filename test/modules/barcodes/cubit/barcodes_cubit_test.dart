@@ -33,4 +33,26 @@ void main() {
       ])
     ],
   );
+
+  blocTest<BarcodesCubit, List>(
+    'should add 2 news barcodes to list',
+    build: () => BarcodesCubit(),
+    act: (cubit) => cubit
+      ..addBarcode(const Barcode(
+        content: 'some barcode',
+      ))
+      ..addBarcode(const Barcode(
+        content: 'another barcode',
+      )),
+    expect: () => [
+      equals([
+        const Barcode(
+          content: 'some barcode',
+        ),
+        const Barcode(
+          content: 'another barcode',
+        )
+      ])
+    ],
+  );
 }
