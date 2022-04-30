@@ -128,4 +128,44 @@ void main() {
           ScanOption.BARCODE,
         )).called(1),
   );
+
+  blocTest<BarcodesCubit, List>(
+    'ensure scanBarCode method adds a barcode to the list',
+    build: () => barcodesCubit,
+    act: (cubit) {
+      when(
+        () => mockScanCodeInputPort.scanCode(
+          scanOption: ScanOption.BARCODE,
+        ),
+      ).thenAnswer(
+        (_) => mockBarcodeScannerInputPort.scanBarcode(
+          '',
+          '',
+          true,
+          ScanOption.BARCODE,
+        ),
+      );
+
+      when(
+        () => mockBarcodeScannerInputPort.scanBarcode(
+          '',
+          '',
+          true,
+          ScanOption.BARCODE,
+        ),
+      ).thenAnswer(
+        (_) => Stream.value(
+          const Barcode(content: 'test'),
+        ),
+      );
+
+      cubit.scanBarCode(ScanOption.BARCODE);
+    },
+    expect: () => [
+      equals([const Barcode(content: 'test')])
+    ],
+    verify: (cubit) {
+      expect(cubit.state.length, 1);
+    },
+  );
 }
