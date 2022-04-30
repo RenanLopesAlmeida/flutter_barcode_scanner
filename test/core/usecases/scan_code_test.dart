@@ -7,36 +7,44 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   test('should return a BarCode name', () async {
+    const scanOption = ScanOption.BARCODE;
     final barCodeScanner = MockFlutterBarcodeScanner();
-    final sut = ScanBarcodeUseCase(barCodeScanner);
+    final sut = ScanBarcodeUseCase(
+      barcodeScanner: barCodeScanner,
+    );
 
-    when(() => sut.scanCode()).thenAnswer(
+    when(() => sut.scanCode(scanOption: scanOption)).thenAnswer(
       (_) => Stream.value('test'),
     );
 
-    sut.scanCode().listen(expectAsync1((code) {
+    sut.scanCode(scanOption: scanOption).listen(expectAsync1((code) {
       expect(code, 'test');
     }));
   });
 }
 
+typedef ScanOption = ScanMode;
+
 class ScanBarcodeUseCase implements ScanCodeInputPort {
-  const ScanBarcodeUseCase(this.barcodeScanner);
+  const ScanBarcodeUseCase({
+    required this.barcodeScanner,
+  });
+
   final BarcodeScanner barcodeScanner;
 
   @override
-  Stream<String> scanCode() {
+  Stream<String> scanCode({required final ScanOption scanOption}) {
     return barcodeScanner.scanBarcode(
       '#ff6666',
       'Cancel',
       true,
-      ScanMode.BARCODE,
+      scanOption,
     );
   }
 }
 
 abstract class ScanCodeInputPort {
-  Stream<String> scanCode();
+  Stream<String> scanCode({required final ScanOption scanOption});
 }
 
 abstract class BarcodeScanner {
