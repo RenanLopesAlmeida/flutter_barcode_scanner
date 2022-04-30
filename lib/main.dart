@@ -2,6 +2,7 @@ import 'package:barcodes_flutter_app/modules/home/ui/screens/home/home_screen.da
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
