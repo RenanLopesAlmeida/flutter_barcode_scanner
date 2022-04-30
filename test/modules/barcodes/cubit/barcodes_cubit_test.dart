@@ -5,6 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 class BarcodesCubit extends Cubit<List<Barcode>> {
   BarcodesCubit() : super([]);
+
+  void addBarcode(Barcode barcode) {
+    state.add(barcode);
+    emit(state);
+  }
 }
 
 void main() {
@@ -12,5 +17,20 @@ void main() {
     'should start with an empty list',
     build: () => BarcodesCubit(),
     expect: () => equals([]),
+  );
+
+  blocTest<BarcodesCubit, List>(
+    'should add a barcode to the list',
+    build: () => BarcodesCubit(),
+    act: (cubit) => cubit.addBarcode(const Barcode(
+      content: 'some barcode',
+    )),
+    expect: () => [
+      equals([
+        const Barcode(
+          content: 'some barcode',
+        )
+      ])
+    ],
   );
 }
