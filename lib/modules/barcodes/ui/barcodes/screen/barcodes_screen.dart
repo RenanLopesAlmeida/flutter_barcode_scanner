@@ -1,4 +1,8 @@
+import 'package:barcodes_flutter_app/core/typedefs/scan_option.dart';
+import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcodes_cubit.dart';
+import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BarcodesListScreen extends StatelessWidget {
   const BarcodesListScreen({Key? key}) : super(key: key);
@@ -10,6 +14,30 @@ class BarcodesListScreen extends StatelessWidget {
         title: const Text('Barcodes List'),
         centerTitle: true,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _scanBarCode(context),
+        child: const Icon(Icons.qr_code),
+      ),
+      body: BlocBuilder<BarcodesCubit, List<Barcode>>(
+        builder: (context, barcodes) {
+          return (barcodes.isEmpty)
+              ? const Center(
+                  child: Text('Nothing Here...'),
+                )
+              : ListView.builder(
+                  itemCount: barcodes.length,
+                  itemBuilder: (final _, final index) {
+                    final barcode = barcodes[index];
+
+                    return Center(child: Text(barcode.content));
+                  },
+                );
+        },
+      ),
     );
+  }
+
+  void _scanBarCode(BuildContext context) {
+    context.read<BarcodesCubit>().scanBarCode(ScanOption.BARCODE);
   }
 }
