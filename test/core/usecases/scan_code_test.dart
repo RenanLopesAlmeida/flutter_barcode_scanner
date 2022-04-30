@@ -1,5 +1,8 @@
+import 'package:barcodes_flutter_app/core/ports/input/bar_code_scanner_input_port.dart';
+import 'package:barcodes_flutter_app/core/ports/input/scan_code_input_port.dart';
+import 'package:barcodes_flutter_app/core/typedefs/scan_option.dart';
+import 'package:barcodes_flutter_app/core/usecases/scan_barcode_use_case.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,7 +13,7 @@ void main() {
     const scanOption = ScanOption.BARCODE;
     final barCodeScanner = MockFlutterBarcodeScanner();
     final sut = ScanBarcodeUseCase(
-      barcodeScanner: barCodeScanner,
+      barcodeScannerInputPort: barCodeScanner,
     );
 
     when(() => sut.scanCode(scanOption: scanOption)).thenAnswer(
@@ -23,39 +26,7 @@ void main() {
   });
 }
 
-typedef ScanOption = ScanMode;
-
-class ScanBarcodeUseCase implements ScanCodeInputPort {
-  const ScanBarcodeUseCase({
-    required this.barcodeScanner,
-  });
-
-  final BarcodeScanner barcodeScanner;
-
-  @override
-  Stream<String> scanCode({required final ScanOption scanOption}) {
-    return barcodeScanner.scanBarcode(
-      '#ff6666',
-      'Cancel',
-      true,
-      scanOption,
-    );
-  }
-}
-
-abstract class ScanCodeInputPort {
-  Stream<String> scanCode({required final ScanOption scanOption});
-}
-
-abstract class BarcodeScanner {
-  Stream<String> scanBarcode(
-    String lineColor,
-    String cancelButtonText,
-    bool isShowFlashIcon,
-    ScanMode scanMode,
-  );
-}
-
 class MockScanUseCase extends Mock implements ScanCodeInputPort {}
 
-class MockFlutterBarcodeScanner extends Mock implements BarcodeScanner {}
+class MockFlutterBarcodeScanner extends Mock
+    implements BarcodeScannerInputPort {}
