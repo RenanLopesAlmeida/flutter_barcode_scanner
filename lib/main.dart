@@ -1,4 +1,4 @@
-import 'package:barcodes_flutter_app/modules/home/ui/screens/home/home_screen.dart';
+import 'package:barcodes_flutter_app/modules/barcodes_list/ui/barcodes_list/screen/barcodes_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const BarcodesListScreen(),
     );
   }
 }
