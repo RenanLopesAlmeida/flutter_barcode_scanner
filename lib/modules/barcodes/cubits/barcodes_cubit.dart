@@ -47,4 +47,10 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
   Future<void> launchURL(String url) async {
     await _redirectLauncher.launchURL(url);
   }
+
+  void removeBarcode(Barcode barcode) {
+    state.removeWhere((element) => element == barcode);
+
+    emit([...state]);
+  }
 }

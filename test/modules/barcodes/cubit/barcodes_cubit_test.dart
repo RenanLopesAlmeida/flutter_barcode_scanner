@@ -200,6 +200,30 @@ void main() {
       ])
     ],
   );
+
+  blocTest<BarcodesCubit, List>(
+    'should be able to delete a specific barcode from the list',
+    build: () => barcodesCubit,
+    seed: () => <Barcode>[
+      Barcode(
+        content: barcodeContent,
+      ),
+    ],
+    act: (cubit) => cubit
+      ..addBarcode(
+        const Barcode(
+          content: 'new content',
+        ),
+      )
+      ..removeBarcode(
+        Barcode(
+          content: barcodeContent,
+        ),
+      ),
+    verify: (cubit) {
+      expect(cubit.state.length, 1);
+    },
+  );
 }
 
 class MockRedirectLauncher extends Mock implements RedirectLauncher {}

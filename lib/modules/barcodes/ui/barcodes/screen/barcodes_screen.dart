@@ -42,7 +42,10 @@ class BarcodesListScreen extends StatelessWidget {
 
                       return _BarcodeItem(
                         barcode: barcode,
-                        onDelete: _removeBarcode,
+                        onDelete: () => _showConfirmationDialog(
+                          context: context,
+                          barcode: barcode,
+                        ),
                         cardPadding: const EdgeInsetsDirectional.all(18),
                         margin: const EdgeInsetsDirectional.only(
                           top: 10,
@@ -117,5 +120,47 @@ class BarcodesListScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  void _removeBarcode() {}
+  void _showConfirmationDialog({
+    required final BuildContext context,
+    required final Barcode barcode,
+  }) {
+    showDialog(
+      context: context,
+      builder: (final _) {
+        return AlertDialog(
+          title: const Text("Do you want to delete this barcode?"),
+          content: Text(barcode.content),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                _removeBarcode(
+                  context: context,
+                  barcode: barcode,
+                );
+
+                _goBack(context);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+              ),
+              child: const Text('Confirm'),
+            ),
+            TextButton(
+              child: const Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _removeBarcode({
+    required final BuildContext context,
+    required final Barcode barcode,
+  }) {
+    context.read<BarcodesCubit>().removeBarcode(barcode);
+  }
 }
