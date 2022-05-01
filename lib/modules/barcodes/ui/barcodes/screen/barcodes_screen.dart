@@ -42,6 +42,7 @@ class BarcodesListScreen extends StatelessWidget {
 
                       return _BarcodeItem(
                         barcode: barcode,
+                        onDelete: _removeBarcode,
                         cardPadding: const EdgeInsetsDirectional.all(18),
                         margin: const EdgeInsetsDirectional.only(
                           top: 10,
@@ -115,4 +116,6 @@ class BarcodesListScreen extends StatelessWidget {
   void _goBack(final BuildContext context) {
     Navigator.pop(context);
   }
+
+  void _removeBarcode() {}
 }
