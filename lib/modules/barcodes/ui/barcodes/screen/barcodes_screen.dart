@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/widgets/alert_dialog_content.dart';
 import 'package:barcodes_flutter_app/widgets/modal_bottom_sheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -127,31 +128,23 @@ class BarcodesListScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (final _) {
-        return AlertDialog(
-          title: const Text("Do you want to delete this barcode?"),
-          content: Text(barcode.content),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                _removeBarcode(
-                  context: context,
-                  barcode: barcode,
-                );
+        return AlertDialogContent(
+          title: 'Do you want to delete this barcode?',
+          content: barcode.content,
+          confirmButtonTitle: 'Confirm',
+          cancelButtonTitle: 'Close',
+          confirmButtonStyle: ElevatedButton.styleFrom(
+            primary: Colors.red,
+          ),
+          onCancel: () => _goBack(context),
+          onConfirm: () {
+            _removeBarcode(
+              context: context,
+              barcode: barcode,
+            );
 
-                _goBack(context);
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red,
-              ),
-              child: const Text('Confirm'),
-            ),
-            TextButton(
-              child: const Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+            _goBack(context);
+          },
         );
       },
     );
