@@ -186,6 +186,24 @@ void main() {
       ])
     ],
   );
+
+  blocTest<BarcodesCubit, List>(
+    'should be able to distinct if there\'s an url on barcode content',
+    build: () => barcodesCubit,
+    act: (cubit) => cubit.addBarcode(
+      const Barcode(
+        content: 'some content',
+      ),
+    ),
+    expect: () => [
+      equals([
+        const Barcode(
+          content: 'some content',
+          isContentUrl: false,
+        ),
+      ])
+    ],
+  );
 }
 
 class MockRedirectLauncher extends Mock implements RedirectLauncher {}
