@@ -20,6 +20,9 @@ class _BarcodeItem extends StatelessWidget {
     return Container(
       margin: _margin,
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Container(
           margin: _cardPadding,
           child: Text(

@@ -27,16 +27,25 @@ class BarcodesListScreen extends StatelessWidget {
               ? const Center(
                   child: Text('Nothing Here...'),
                 )
-              : ListView.builder(
-                  itemCount: barcodes.length,
-                  itemBuilder: (final _, final index) {
-                    final barcode = barcodes[index];
+              : Container(
+                  margin: const EdgeInsetsDirectional.only(
+                    start: 20,
+                    end: 20,
+                  ),
+                  child: ListView.builder(
+                    itemCount: barcodes.length,
+                    itemBuilder: (final _, final index) {
+                      final barcode = barcodes[index];
 
-                    return _BarcodeItem(
-                      barcode: barcode,
-                      cardPadding: const EdgeInsetsDirectional.all(18),
-                    );
-                  },
+                      return _BarcodeItem(
+                        barcode: barcode,
+                        cardPadding: const EdgeInsetsDirectional.all(18),
+                        margin: const EdgeInsetsDirectional.only(
+                          top: 10,
+                        ),
+                      );
+                    },
+                  ),
                 );
         },
       ),
