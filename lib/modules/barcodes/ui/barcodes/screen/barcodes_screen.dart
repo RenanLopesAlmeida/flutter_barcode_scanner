@@ -83,7 +83,7 @@ class BarcodesListScreen extends StatelessWidget {
           top: Radius.circular(40),
         ),
       ),
-      builder: (BuildContext context) {
+      builder: (final _) {
         return ModalBottomSheetContent(
           padding: const EdgeInsetsDirectional.only(
             top: 12,
@@ -92,14 +92,25 @@ class BarcodesListScreen extends StatelessWidget {
           subtitle: url,
           cancelButtonText: 'Close',
           confirmButtonText: 'Open browser',
-          onConfirm: () => _redirectToURL(url),
+          onConfirm: () => _redirectToURL(context: context, url: url),
           onCancel: () => _goBack(context),
         );
       },
     );
   }
 
-  void _redirectToURL(final String url) {}
+  Future<void> _redirectToURL({
+    required final BuildContext context,
+    required final String url,
+  }) async {
+    await context.read<BarcodesCubit>().launchURL(url);
 
-  void _goBack(final BuildContext context) {}
+    if (Navigator.canPop(context)) {
+      _goBack(context);
+    }
+  }
+
+  void _goBack(final BuildContext context) {
+    Navigator.pop(context);
+  }
 }
