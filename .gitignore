@@ -47,5 +47,6 @@ app.*.map.json
 
 # Auto generated files
 lib/**/*.g.dart
+lib/**/*.freezed.dart
 lib/core/service_locator/**/*.config.dart
 gen/

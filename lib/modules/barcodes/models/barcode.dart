@@ -1,14 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Barcode extends Equatable {
-  const Barcode({
+part 'barcode.freezed.dart';
+
+@freezed
+class Barcode with _$Barcode {
+  const factory Barcode({
     required final String content,
-  }) : _content = content;
-
-  final String _content;
-
-  String get content => _content;
-
-  @override
-  List<Object?> get props => [_content];
+  }) = _Barcode;
 }
