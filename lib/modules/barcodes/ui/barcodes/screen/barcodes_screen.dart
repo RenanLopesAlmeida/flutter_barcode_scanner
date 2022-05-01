@@ -24,7 +24,9 @@ class BarcodesListScreen extends StatelessWidget {
       ),
       body: BlocBuilder<BarcodesCubit, List<Barcode>>(
         builder: (context, barcodes) {
-          return (barcodes.isEmpty)
+          final orderedBarcodes = barcodes.reversed.toList();
+
+          return (orderedBarcodes.isEmpty)
               ? const Center(
                   child: Text('Nothing Here...'),
                 )
@@ -34,9 +36,9 @@ class BarcodesListScreen extends StatelessWidget {
                     end: 20,
                   ),
                   child: ListView.builder(
-                    itemCount: barcodes.length,
+                    itemCount: orderedBarcodes.length,
                     itemBuilder: (final _, final index) {
-                      final barcode = barcodes[index];
+                      final barcode = orderedBarcodes[index];
 
                       return _BarcodeItem(
                         barcode: barcode,

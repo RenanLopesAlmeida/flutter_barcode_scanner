@@ -52,27 +52,20 @@ void main() {
     ],
   );
 
-  blocTest<BarcodesCubit, List>(
-    'should add 2 news barcodes to list',
-    build: () => barcodesCubit,
-    act: (cubit) => cubit
-      ..addBarcode(const Barcode(
-        content: 'some barcode',
-      ))
-      ..addBarcode(const Barcode(
-        content: 'another barcode',
-      )),
-    expect: () => [
-      equals([
-        const Barcode(
-          content: 'some barcode',
-        ),
-        const Barcode(
-          content: 'another barcode',
-        )
-      ])
-    ],
-  );
+  blocTest<BarcodesCubit, List>('should add 2 news barcodes to list',
+      build: () => barcodesCubit,
+      act: (cubit) {
+        cubit
+          ..addBarcode(const Barcode(
+            content: 'some barcode',
+          ))
+          ..addBarcode(const Barcode(
+            content: 'another barcode',
+          ));
+      },
+      verify: (cubit) {
+        expect(cubit.state.length, 2);
+      });
 
   blocTest<BarcodesCubit, List>(
     'scanBarCode method should call ScanBarCodeInputPort',

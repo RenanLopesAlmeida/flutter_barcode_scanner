@@ -25,8 +25,7 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
       updatedBarcode = barcode.copyWith(isContentUrl: true);
     }
 
-    state.add(updatedBarcode);
-    emit(state);
+    emit([...state, updatedBarcode]);
   }
 
   Future<Barcode?> scanBarCode(final ScanOption scanOption) async {
