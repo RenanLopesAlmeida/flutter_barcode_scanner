@@ -52,7 +52,54 @@ class BarcodesListScreen extends StatelessWidget {
     );
   }
 
-  void _scanBarCode(BuildContext context) {
-    context.read<BarcodesCubit>().scanBarCode(ScanOption.BARCODE);
+  Future<void> _scanBarCode(BuildContext context) async {
+    final barcode = await context.read<BarcodesCubit>().scanBarCode(
+          ScanOption.BARCODE,
+        );
+
+    if (barcode == null) {
+      return;
+    }
+
+    if (barcode.isContentUrl) {
+      WidgetsBinding.instance?.addPostFrameCallback(
+        (_) => _showBottomSheet(
+          context: context,
+          url: barcode.content,
+        ),
+      );
+    }
+  }
+
+  void _showBottomSheet({
+    required final BuildContext context,
+    required final String url,
+  }) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.amber,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Do you want to go to this website? $url'),
+                ElevatedButton(
+                  child: const Text('Open browser'),
+                  onPressed: () {},
+                ),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -29,14 +29,20 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
     emit(state);
   }
 
-  void scanBarCode(final ScanOption scanOption) {
-    _scanBarCodeInputPort.scanCode(scanOption: scanOption).listen((
-      final barcode,
-    ) {
-      addBarcode(barcode);
-    }, onError: (final error, final stackTrace) {
-      addError(error, stackTrace);
-    });
+  Future<Barcode?> scanBarCode(final ScanOption scanOption) async {
+    final barcode = await _scanBarCodeInputPort
+        .scanCode(
+          scanOption: scanOption,
+        )
+        .last;
+
+    addBarcode(barcode);
+
+    final isContentUrl = barcode.content.isURL;
+
+    final updatedBarcode = barcode.copyWith(isContentUrl: isContentUrl);
+
+    return updatedBarcode;
   }
 
   Future<void> launchURL(String url) async {
