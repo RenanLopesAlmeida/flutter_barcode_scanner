@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/widgets/modal_bottom_sheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -77,29 +78,28 @@ class BarcodesListScreen extends StatelessWidget {
   }) {
     showModalBottomSheet<void>(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+      ),
       builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          color: Colors.amber,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text('Do you want to go to this website? $url'),
-                ElevatedButton(
-                  child: const Text('Open browser'),
-                  onPressed: () {},
-                ),
-                ElevatedButton(
-                  child: const Text('Close BottomSheet'),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
+        return ModalBottomSheetContent(
+          padding: const EdgeInsetsDirectional.only(
+            top: 12,
           ),
+          title: 'Do you want to go to this website?',
+          subtitle: url,
+          cancelButtonText: 'Close',
+          confirmButtonText: 'Open browser',
+          onConfirm: () => _redirectToURL(url),
+          onCancel: () => _goBack(context),
         );
       },
     );
   }
+
+  void _redirectToURL(final String url) {}
+
+  void _goBack(final BuildContext context) {}
 }
