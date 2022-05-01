@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:barcodes_flutter_app/core/typedefs/scan_option.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcodes_cubit.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+part '../widgets/barcode_item.dart';
 
 class BarcodesListScreen extends StatelessWidget {
   const BarcodesListScreen({Key? key}) : super(key: key);
@@ -29,7 +32,10 @@ class BarcodesListScreen extends StatelessWidget {
                   itemBuilder: (final _, final index) {
                     final barcode = barcodes[index];
 
-                    return Center(child: Text(barcode.content));
+                    return _BarcodeItem(
+                      barcode: barcode,
+                      cardPadding: const EdgeInsetsDirectional.all(18),
+                    );
                   },
                 );
         },

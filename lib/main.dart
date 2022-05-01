@@ -23,12 +23,17 @@ class MyApp extends StatelessWidget {
       ),
 
       //TODO :: Inject it
-      home: BlocProvider<BarcodesCubit>.value(
-        value: BarcodesCubit(
-          scanBarCodeInputPort: ScanBarcodeUseCase(
-            barcodeScannerInputPort: BarcodeScannerUseCase(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<BarcodesCubit>.value(
+            value: BarcodesCubit(
+              scanBarCodeInputPort: ScanBarcodeUseCase(
+                barcodeScannerInputPort: BarcodeScannerUseCase(),
+              ),
+            ),
+            child: const BarcodesListScreen(),
           ),
-        ),
+        ],
         child: const BarcodesListScreen(),
       ),
     );

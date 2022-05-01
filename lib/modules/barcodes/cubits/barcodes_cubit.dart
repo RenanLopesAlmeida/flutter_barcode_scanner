@@ -1,7 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:barcodes_flutter_app/core/ports/input/scan_code_input_port.dart';
 import 'package:barcodes_flutter_app/core/typedefs/scan_option.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BarcodesCubit extends Cubit<List<Barcode>> {
   BarcodesCubit({
@@ -20,8 +20,9 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
     _scanBarCodeInputPort.scanCode(scanOption: scanOption).listen((
       final barcode,
     ) {
-      state.add(barcode);
-      emit(state);
+      addBarcode(barcode);
+    }, onError: (final error, final stackTrace) {
+      addError(error, stackTrace);
     });
   }
 }
