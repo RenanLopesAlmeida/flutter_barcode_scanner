@@ -19,7 +19,7 @@ void main() {
   late String url;
 
   setUp(() {
-    url = 'https://google.com';
+    url = 'https://www.google.com/';
     mockBarcodeScannerInputPort = MockBarcodeScannerInputPort();
     mockScanCodeInputPort = MockScanCodeInputPort();
     mockRedirectLauncher = MockRedirectLauncher();
@@ -167,6 +167,24 @@ void main() {
     verify: (cubit) => verify(
       () => mockRedirectLauncher.launchURL(url),
     ).called(1),
+  );
+
+  blocTest<BarcodesCubit, List>(
+    'should be able to identify if there\'s an url on barcode content',
+    build: () => barcodesCubit,
+    act: (cubit) => cubit.addBarcode(
+      Barcode(
+        content: url,
+      ),
+    ),
+    expect: () => [
+      equals([
+        Barcode(
+          content: url,
+          isContentUrl: true,
+        ),
+      ])
+    ],
   );
 }
 

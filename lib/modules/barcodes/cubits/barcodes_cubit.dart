@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/extensions/string_extension.dart';
 import 'package:barcodes_flutter_app/utils/app_redirect_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:barcodes_flutter_app/core/ports/input/scan_code_input_port.dart';
@@ -16,6 +17,16 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
   final RedirectLauncher _redirectLauncher;
 
   void addBarcode(Barcode barcode) {
+    final hasURL = barcode.content.isURL;
+
+    if (hasURL) {
+      final updatedBarcode = barcode.copyWith(isContentUrl: true);
+      state.add(updatedBarcode);
+      emit(state);
+
+      return;
+    }
+
     state.add(barcode);
     emit(state);
   }
