@@ -19,15 +19,13 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
   void addBarcode(Barcode barcode) {
     final hasURL = barcode.content.isURL;
 
-    if (hasURL) {
-      final updatedBarcode = barcode.copyWith(isContentUrl: true);
-      state.add(updatedBarcode);
-      emit(state);
+    Barcode updatedBarcode = barcode;
 
-      return;
+    if (hasURL) {
+      updatedBarcode = barcode.copyWith(isContentUrl: true);
     }
 
-    state.add(barcode);
+    state.add(updatedBarcode);
     emit(state);
   }
 
