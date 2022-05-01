@@ -4,6 +4,7 @@ import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcodes_cubit.dart
 import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
 import 'package:barcodes_flutter_app/utils/app_redirect_launcher.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -17,9 +18,11 @@ void main() {
   late MockRedirectLauncher mockRedirectLauncher;
   late BarcodesCubit barcodesCubit;
   late String url;
+  late String barcodeContent;
 
   setUp(() {
     url = 'https://www.google.com/';
+    barcodeContent = faker.address.person.name();
     mockBarcodeScannerInputPort = MockBarcodeScannerInputPort();
     mockScanCodeInputPort = MockScanCodeInputPort();
     mockRedirectLauncher = MockRedirectLauncher();
@@ -37,13 +40,13 @@ void main() {
   blocTest<BarcodesCubit, List>(
     'should add a barcode to the list',
     build: () => barcodesCubit,
-    act: (cubit) => cubit.addBarcode(const Barcode(
-      content: 'some barcode',
+    act: (cubit) => cubit.addBarcode(Barcode(
+      content: barcodeContent,
     )),
     expect: () => [
       equals([
-        const Barcode(
-          content: 'some barcode',
+        Barcode(
+          content: barcodeContent,
         )
       ])
     ],
@@ -97,14 +100,14 @@ void main() {
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          const Barcode(content: 'test'),
+          Barcode(content: barcodeContent),
         ),
       );
 
       cubit.scanBarCode(ScanOption.BARCODE);
     },
     expect: () => [
-      equals([const Barcode(content: 'test')])
+      equals([Barcode(content: barcodeContent)])
     ],
     verify: (cubit) => verify(() => mockBarcodeScannerInputPort.scanBarcode(
           '',
@@ -140,14 +143,14 @@ void main() {
         ),
       ).thenAnswer(
         (_) => Stream.value(
-          const Barcode(content: 'test'),
+          Barcode(content: barcodeContent),
         ),
       );
 
       cubit.scanBarCode(ScanOption.BARCODE);
     },
     expect: () => [
-      equals([const Barcode(content: 'test')])
+      equals([Barcode(content: barcodeContent)])
     ],
     verify: (cubit) {
       expect(cubit.state.length, 1);
@@ -191,14 +194,14 @@ void main() {
     'should be able to distinct if there\'s an url on barcode content',
     build: () => barcodesCubit,
     act: (cubit) => cubit.addBarcode(
-      const Barcode(
-        content: 'some content',
+      Barcode(
+        content: barcodeContent,
       ),
     ),
     expect: () => [
       equals([
-        const Barcode(
-          content: 'some content',
+        Barcode(
+          content: barcodeContent,
           isContentUrl: false,
         ),
       ])
