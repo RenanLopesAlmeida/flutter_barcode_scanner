@@ -6,5 +6,6 @@ part 'barcode.freezed.dart';
 class Barcode with _$Barcode {
   const factory Barcode({
     required final String content,
+    @Default(false) final bool isContentUrl,
   }) = _Barcode;
 }
