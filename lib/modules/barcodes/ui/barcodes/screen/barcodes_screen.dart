@@ -13,6 +13,8 @@ import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
 
 part '../widgets/barcode_item.dart';
 part '../widgets/barcodes_option_bottom_sheet_content.dart';
+part '../widgets/barcode_empty_list.dart';
+part '../widgets/barcode_list.dart';
 
 class BarcodesListScreen extends StatelessWidget {
   const BarcodesListScreen({Key? key}) : super(key: key);
@@ -66,31 +68,12 @@ class BarcodesListScreen extends StatelessWidget {
                 final orderedBarcodes = barcodes.reversed.toList();
 
                 return (orderedBarcodes.isEmpty)
-                    ? const Center(
-                        child: Text('Nothing Here...'),
-                      )
-                    : Container(
-                        margin: const EdgeInsetsDirectional.only(
-                          start: 20,
-                          end: 20,
-                        ),
-                        child: ListView.builder(
-                          itemCount: orderedBarcodes.length,
-                          itemBuilder: (final _, final index) {
-                            final barcode = orderedBarcodes[index];
-
-                            return _BarcodeItem(
-                              barcode: barcode,
-                              onDelete: () => _showConfirmationDialog(
-                                context: context,
-                                barcode: barcode,
-                              ),
-                              cardPadding: const EdgeInsetsDirectional.all(18),
-                              margin: const EdgeInsetsDirectional.only(
-                                top: 10,
-                              ),
-                            );
-                          },
+                    ? const _BarcodeEmptyList()
+                    : _BarcodeList(
+                        barcodes: orderedBarcodes,
+                        onDelete: (barcode) => _showConfirmationDialog(
+                          context: context,
+                          barcode: barcode,
                         ),
                       );
               },
