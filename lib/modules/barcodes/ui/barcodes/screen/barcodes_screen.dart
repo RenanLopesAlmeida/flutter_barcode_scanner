@@ -10,6 +10,7 @@ import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcodes_cubit.dart
 import 'package:barcodes_flutter_app/modules/barcodes/models/barcode.dart';
 
 part '../widgets/barcode_item.dart';
+part '../widgets/barcodes_option_bottom_sheet_content.dart';
 
 class BarcodesListScreen extends StatelessWidget {
   const BarcodesListScreen({Key? key}) : super(key: key);
@@ -28,28 +29,23 @@ class BarcodesListScreen extends StatelessWidget {
       body: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<BarcodeStateCubit, BarcodeContent>(
-            builder: (context, state) {
+          BlocListener<BarcodeStateCubit, BarcodeContent>(
+            listener: (_, state) {
               if (state is BarcodeMultipleContent) {
                 final barcodes =
                     context.read<BarcodesCubit>().extractContentByDelimiter(
                           barcode: state.barcode,
                         );
 
-                return Flexible(
-                  child: ListView.builder(
-                    itemCount: barcodes.length,
-                    itemBuilder: (final _, final index) {
-                      final barcode = barcodes[index];
-
-                      return Text(barcode.content);
-                    },
+                WidgetsBinding.instance?.addPostFrameCallback(
+                  (_) => _showMultipleContentsBottomSheet(
+                    context: context,
+                    barcodes: barcodes,
                   ),
                 );
               }
-
-              return const SizedBox();
             },
+            child: const SizedBox(),
           ),
           Expanded(
             child: BlocBuilder<BarcodesCubit, List<Barcode>>(
@@ -191,5 +187,34 @@ class BarcodesListScreen extends StatelessWidget {
     required final Barcode barcode,
   }) {
     context.read<BarcodesCubit>().removeBarcode(barcode);
+  }
+
+  void _showMultipleContentsBottomSheet({
+    required final BuildContext context,
+    required final List<Barcode> barcodes,
+  }) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+      ),
+      builder: (final _) {
+        return _BarcodesPickerBottomSheetContent(
+          padding: const EdgeInsetsDirectional.only(
+            top: 12,
+          ),
+          barcodes: barcodes,
+          title: 'Pick the content that you want',
+          cancelButtonText: 'Cancel',
+          confirmButtonText: 'Confirm',
+          onConfirm: () {},
+          onCancel: () => _goBack(context),
+          groupValue: 0,
+          onChanged: (value) {},
+        );
+      },
+    );
   }
 }
