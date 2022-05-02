@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Barcode Scanner',
+      debugShowCheckedModeBanner: false,
       theme: AppThemeData.getDefaultTheme(),
       home: MultiBlocProvider(
         providers: [
