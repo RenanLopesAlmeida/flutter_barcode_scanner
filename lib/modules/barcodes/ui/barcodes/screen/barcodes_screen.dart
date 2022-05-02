@@ -45,6 +45,17 @@ class BarcodesListScreen extends StatelessWidget {
                   ),
                 );
               }
+
+              if (state is BarcodeURLState) {
+                final barcode = state.barcode;
+
+                WidgetsBinding.instance?.addPostFrameCallback(
+                  (_) => _showUrlLauncherBottomSheet(
+                    context: context,
+                    url: barcode.content,
+                  ),
+                );
+              }
             },
             child: const SizedBox(),
           ),
@@ -91,7 +102,7 @@ class BarcodesListScreen extends StatelessWidget {
 
   Future<void> _scanBarCode(BuildContext context) async {
     final barcode = await context.read<BarcodesCubit>().scanBarCode(
-          ScanOption.BARCODE,
+          ScanOption.QR,
         );
 
     if (barcode == null) {
@@ -105,7 +116,7 @@ class BarcodesListScreen extends StatelessWidget {
 
     if (barcode.isContentUrl) {
       WidgetsBinding.instance?.addPostFrameCallback(
-        (_) => _showBottomSheet(
+        (_) => _showUrlLauncherBottomSheet(
           context: context,
           url: barcode.content,
         ),
@@ -113,7 +124,7 @@ class BarcodesListScreen extends StatelessWidget {
     }
   }
 
-  void _showBottomSheet({
+  void _showUrlLauncherBottomSheet({
     required final BuildContext context,
     required final String url,
   }) {

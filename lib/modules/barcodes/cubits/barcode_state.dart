@@ -19,3 +19,7 @@ class BarcodeSingleContent extends BarcodeContent {
 class BarcodeMultipleContent extends BarcodeContent {
   BarcodeMultipleContent(Barcode barcode) : super(barcode);
 }
+
+class BarcodeURLState extends BarcodeContent {
+  BarcodeURLState(Barcode barcode) : super(barcode);
+}

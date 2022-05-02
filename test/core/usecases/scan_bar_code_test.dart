@@ -24,7 +24,7 @@ void main() {
     );
 
     sut.scanCode(scanOption: scanOption).listen(expectAsync1((code) {
-      expect(code.content, 'test');
+      expect(code?.content, 'test');
     }));
   });
 }

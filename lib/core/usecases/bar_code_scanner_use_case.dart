@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class BarcodeScannerUseCase implements BarcodeScannerInputPort {
   @override
-  Stream<Barcode> scanBarcode(
+  Stream<Barcode?> scanBarcode(
     String lineColor,
     String cancelButtonText,
     bool isShowFlashIcon,
@@ -20,11 +20,17 @@ class BarcodeScannerUseCase implements BarcodeScannerInputPort {
         scanMode,
       ),
     ).switchMap(
-      (final content) => Stream.value(
-        Barcode(
-          content: content,
-        ),
-      ),
+      (final content) {
+        if (content == '-1') {
+          return Stream.value(null);
+        }
+
+        return Stream.value(
+          Barcode(
+            content: content,
+          ),
+        );
+      },
     );
   }
 }

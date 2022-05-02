@@ -36,6 +36,10 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
         )
         .last;
 
+    if (barcode == null) {
+      return null;
+    }
+
     final hasMultipleContents = _hasMultipleContents(barcode: barcode);
 
     if (hasMultipleContents) {

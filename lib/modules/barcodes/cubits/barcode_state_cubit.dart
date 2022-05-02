@@ -11,4 +11,8 @@ class BarcodeStateCubit extends Cubit<BarcodeContent> {
   void setMultipleContent(final Barcode barcode) {
     emit(BarcodeMultipleContent(barcode));
   }
+
+  void setBarcodeURLState(final Barcode barcode) {
+    emit(BarcodeURLState(barcode));
+  }
 }

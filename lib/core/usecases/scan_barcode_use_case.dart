@@ -11,7 +11,7 @@ class ScanBarcodeUseCase implements ScanCodeInputPort {
   final BarcodeScannerInputPort barcodeScannerInputPort;
 
   @override
-  Stream<Barcode> scanCode({required final ScanOption scanOption}) {
+  Stream<Barcode?> scanCode({required final ScanOption scanOption}) {
     return barcodeScannerInputPort.scanBarcode(
       '#ff6666',
       'Cancel',
