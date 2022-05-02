@@ -224,6 +224,28 @@ void main() {
       expect(cubit.state.length, 1);
     },
   );
+
+  blocTest<BarcodesCubit, List>(
+    'should be able to extract multiple contents on the same barcode',
+    build: () => barcodesCubit,
+    seed: () => <Barcode>[
+      Barcode(
+        content: barcodeContent + '; new content ; another content',
+      ),
+    ],
+    act: (cubit) {
+      final barcodes = cubit.extractContentByDelimiter(
+        barcode: Barcode(
+          content: barcodeContent + '; new content ; another content',
+        ),
+      );
+
+      cubit.emit(barcodes);
+    },
+    verify: (cubit) {
+      expect(cubit.state.length, 3);
+    },
+  );
 }
 
 class MockRedirectLauncher extends Mock implements RedirectLauncher {}
