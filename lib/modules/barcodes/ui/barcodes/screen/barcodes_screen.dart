@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/extensions/string_extension.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_picker_cubit.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state_cubit.dart';
@@ -245,5 +246,11 @@ class BarcodesListScreen extends StatelessWidget {
   }) {
     context.read<BarcodesCubit>().addBarcode(barcode);
     _goBack(context);
+
+    final hasURL = barcode.content.isURL;
+
+    if (hasURL) {
+      context.read<BarcodeStateCubit>().setBarcodeURLState(barcode);
+    }
   }
 }
