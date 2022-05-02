@@ -76,7 +76,7 @@ class BarcodesCubit extends Cubit<List<Barcode>> {
     final contents = barcode.content.split(delimiter);
 
     for (var content in contents) {
-      barcodes.add(Barcode(content: content));
+      barcodes.add(Barcode(content: content.trim()));
     }
 
     return barcodes;
