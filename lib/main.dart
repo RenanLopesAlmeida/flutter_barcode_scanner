@@ -1,4 +1,5 @@
 import 'package:barcodes_flutter_app/core/usecases/bar_code_scanner_use_case.dart';
+import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state_cubit.dart';
 import 'package:barcodes_flutter_app/utils/app_redirect_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
                 barcodeScannerInputPort: BarcodeScannerUseCase(),
               ),
             ),
+            child: const BarcodesListScreen(),
+          ),
+          BlocProvider<BarcodeStateCubit>.value(
+            value: BarcodeStateCubit(),
             child: const BarcodesListScreen(),
           ),
         ],

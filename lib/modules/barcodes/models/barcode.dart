@@ -9,4 +9,8 @@ class Barcode with _$Barcode {
     @Default(false) final bool isContentUrl,
     @Default(false) final bool hasMultipleContents,
   }) = _Barcode;
+
+  factory Barcode.empty() {
+    return const Barcode(content: '');
+  }
 }
