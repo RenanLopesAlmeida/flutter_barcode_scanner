@@ -24,13 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
-      //TODO :: Inject it
       home: MultiBlocProvider(
         providers: [
           BlocProvider<BarcodesCubit>.value(
             value: BarcodesCubit(
-              redirectLauncher: AppRedirectLauncher(),
+              redirectLauncher: ServiceLocatorConfig.provide(),
               scanBarCodeInputPort: ServiceLocatorConfig.provide(),
             ),
             child: const BarcodesListScreen(),
