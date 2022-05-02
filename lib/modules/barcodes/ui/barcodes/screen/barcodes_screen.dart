@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_picker_cubit.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state_cubit.dart';
 import 'package:barcodes_flutter_app/widgets/alert_dialog_content.dart';
@@ -99,6 +100,7 @@ class BarcodesListScreen extends StatelessWidget {
 
     if (barcode.hasMultipleContents) {
       context.read<BarcodeStateCubit>().setMultipleContent(barcode);
+      return;
     }
 
     if (barcode.isContentUrl) {
@@ -201,20 +203,36 @@ class BarcodesListScreen extends StatelessWidget {
         ),
       ),
       builder: (final _) {
-        return _BarcodesPickerBottomSheetContent(
-          padding: const EdgeInsetsDirectional.only(
-            top: 12,
-          ),
-          barcodes: barcodes,
-          title: 'Pick the content that you want',
-          cancelButtonText: 'Cancel',
-          confirmButtonText: 'Confirm',
-          onConfirm: () {},
-          onCancel: () => _goBack(context),
-          groupValue: 0,
-          onChanged: (value) {},
+        return BlocBuilder<BarcodePickerCubit, int>(
+          bloc: BlocProvider.of<BarcodePickerCubit>(context),
+          builder: (final _, final index) {
+            return _BarcodesPickerBottomSheetContent(
+              padding: const EdgeInsetsDirectional.only(
+                top: 12,
+              ),
+              barcodes: barcodes,
+              title: 'Pick the content that you want',
+              cancelButtonText: 'Cancel',
+              confirmButtonText: 'Confirm',
+              onConfirm: () => _addBarcode(
+                context: context,
+                barcode: barcodes[index],
+              ),
+              onCancel: () => _goBack(context),
+              groupValue: index,
+              onChanged: context.read<BarcodePickerCubit>().setValue,
+            );
+          },
         );
       },
     );
+  }
+
+  void _addBarcode({
+    required final BuildContext context,
+    required final Barcode barcode,
+  }) {
+    context.read<BarcodesCubit>().addBarcode(barcode);
+    _goBack(context);
   }
 }

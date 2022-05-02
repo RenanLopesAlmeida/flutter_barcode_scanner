@@ -1,4 +1,5 @@
 import 'package:barcodes_flutter_app/core/usecases/bar_code_scanner_use_case.dart';
+import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_picker_cubit.dart';
 import 'package:barcodes_flutter_app/modules/barcodes/cubits/barcode_state_cubit.dart';
 import 'package:barcodes_flutter_app/utils/app_redirect_launcher.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,12 @@ class MyApp extends StatelessWidget {
             value: BarcodeStateCubit(),
             child: const BarcodesListScreen(),
           ),
+
+          BlocProvider<BarcodePickerCubit>.value(
+            value: BarcodePickerCubit(),
+            child: const BarcodesListScreen(),
+          ),
+          //BarcodePicker
         ],
         child: const BarcodesListScreen(),
       ),
