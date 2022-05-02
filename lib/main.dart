@@ -1,3 +1,4 @@
+import 'package:barcodes_flutter_app/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,9 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppThemeData.getDefaultTheme(),
       home: MultiBlocProvider(
         providers: [
           BlocProvider<BarcodesCubit>.value(
